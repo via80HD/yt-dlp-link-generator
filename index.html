@@ -45,6 +45,7 @@
 
   <label for="output">Generated yt-dlp Command:</label>
   <textarea id="output" readonly></textarea>
+  
 
   <script>
     const urlInput = document.getElementById('urlInput');
@@ -91,5 +92,69 @@
       output.value = command;
     }
   </script>
+
+<script>
+  const urlInput = document.getElementById('urlInput');
+  const commandSelect = document.getElementById('commandSelect');
+  const sectionInput = document.getElementById('sectionInput');
+  const timeRange = document.getElementById('timeRange');
+  const output = document.getElementById('output');
+
+  commandSelect.addEventListener('change', () => {
+    sectionInput.classList.toggle('hidden', commandSelect.value !== 'section');
+  });
+
+  function generateCommand() {
+    const url = urlInput.value.trim();
+    const cmdType = commandSelect.value;
+
+    if (!url) {
+      alert("Please enter a YouTube URL.");
+      return;
+    }
+
+    let command = "yt-dlp";
+
+    switch (cmdType) {
+      case 'audio':
+        command += ` -x --audio-format wav "${url}"`;
+        break;
+      case '720p':
+        command += ` -f "best[height>=720]" "${url}"`;
+        break;
+      case 'section':
+        const range = timeRange.value.trim();
+        if (!range) {
+          alert("Please enter a time range.");
+          return;
+        }
+        command += ` --download-sections '*${range}' "${url}"`;
+        break;
+      default:
+        alert("Please select a command.");
+        return;
+    }
+
+    output.value = command;
+  }
+
+  function copyCommand() {
+    output.select();
+    document.execCommand('copy');
+    alert('Command copied to clipboard!');
+  }
+</script>
+
+  button {
+  background-color: #333;
+  color: #fff;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+}
+button:hover {
+  background-color: #555;
+}
+  
 </body>
 </html>
