@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>yt-dlp Command Generator</title>
+  <style>
+    body {
+      font-family: sans-serif;
+      padding: 20px;
+      background: #1e1e1e;
+      color: #f0f0f0;
+    }
+    input, select, button, textarea {
+      padding: 8px;
+      margin: 8px 0;
+      width: 100%;
+      box-sizing: border-box;
+      font-size: 1em;
+    }
+    .hidden { display: none; }
+    label { font-weight: bold; }
+    textarea { height: 60px; }
+  </style>
+</head>
+<body>
+  <h2>yt-dlp Command Generator</h2>
+
+  <label for="urlInput">YouTube Link:</label>
+  <input type="text" id="urlInput" placeholder="https://www.youtube.com/watch?v=...">
+
+  <label for="commandSelect">Choose a Command:</label>
+  <select id="commandSelect">
+    <option value="">-- Select a Command --</option>
+    <option value="audio">Extract Audio (WAV)</option>
+    <option value="720p">Download Video (720p+)</option>
+    <option value="section">Download Section</option>
+  </select>
+
+  <div id="sectionInput" class="hidden">
+    <label for="timeRange">Time Range (e.g. 1:00-2:30):</label>
+    <input type="text" id="timeRange" placeholder="start-end (e.g. 10:00-20:00)">
+  </div>
+
+  <button onclick="generateCommand()">Generate Command</button>
+
+  <label for="output">Generated yt-dlp Command:</label>
+  <textarea id="output" readonly></textarea>
+
+  <script>
+    const urlInput = document.getElementById('urlInput');
+    const commandSelect = document.getElementById('commandSelect');
+    const sectionInput = document.getElementById('sectionInput');
+    const timeRange = document.getElementById('timeRange');
+    const output = document.getElementById('output');
+
+    commandSelect.addEventListener('change', () => {
+      sectionInput.classList.toggle('hidden', commandSelect.value !== 'section');
+    });
+
+    function generateCommand() {
+      const url = urlInput.value.trim();
+      const cmdType = commandSelect.value;
+
+      if (!url) {
+        alert("Please enter a YouTube URL.");
+        return;
+      }
+
+      let command = "yt-dlp";
+
+      switch (cmdType) {
+        case 'audio':
+          command += ` -x --audio-format wav "${url}"`;
+          break;
+        case '720p':
+          command += ` -f "best[height>=720]" "${url}"`;
+          break;
+        case 'section':
+          const range = timeRange.value.trim();
+          if (!range) {
+            alert("Please enter a time range.");
+            return;
+          }
+          command += ` --download-sections '*${range}' "${url}"`;
+          break;
+        default:
+          alert("Please select a command.");
+          return;
+      }
+
+      output.value = command;
+    }
+  </script>
+</body>
+</html>
