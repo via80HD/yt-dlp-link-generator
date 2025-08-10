@@ -1,35 +1,50 @@
-
-</body>
-</html><!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="en">
 <head>
   <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>YT-DLP QUICK COMMAND GENERATOR</title>
   <style>
     body {
       font-family: sans-serif;
-      padding: 20px;
+      padding: 16px;
       background: #1e1e1e;
       color: #f0f0f0;
+      font-size: 18px; /* Bigger base font */
+      line-height: 1.5;
     }
     input, select, button, textarea {
-      padding: 8px;
-      margin: 8px 0;
+      padding: 14px;
+      margin: 10px 0;
       width: 100%;
       box-sizing: border-box;
-      font-size: 1em;
+      font-size: 18px; /* Bigger touch-friendly size */
+      border-radius: 8px;
+      border: 1px solid #444;
+      background-color: #2a2a2a;
+      color: #fff;
     }
-    .hidden { display: none; }
-    label { font-weight: bold; }
-    textarea { height: 40px; }
-    #copyBtn {
+    textarea {
+      min-height: 60px; /* More space for commands */
+      resize: vertical;
+    }
+    button {
       background-color: #4CAF50;
       color: white;
       border: none;
       cursor: pointer;
+      font-weight: bold;
     }
-    #copyBtn:hover {
+    button:hover {
       background-color: #45a049;
+    }
+    label {
+      font-weight: bold;
+      display: block;
+      margin-top: 12px;
+    }
+    .hidden {
+      display: none;
     }
   </style>
 </head>
